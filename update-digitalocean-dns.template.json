@@ -1,0 +1,15 @@
+{
+    "domains": [
+        {
+            "domain": "your-domain.com",
+            "records": [
+                {
+                    "name": "@",
+                    "type": "A"
+                }
+            ]
+        }
+    ],
+    "personal_access_token_file": "/full/path/to/digitalocean-personal-access-token-file",
+    "public_ip_address_log_file": "/full/path/to/public-ip-address.log"
+}
