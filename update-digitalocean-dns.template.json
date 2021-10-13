@@ -1,15 +1,18 @@
 {
     "domains": [
         {
-            "domain": "your-domain.com",
+            "name": "your-domain.com",
             "records": [
-                {
-                    "name": "@",
-                    "type": "A"
-                }
+                { "name": "@", "type": "A" },
+                { "name": "*", "type": "A" }
             ]
         }
     ],
     "personal_access_token_file": "/full/path/to/digitalocean-personal-access-token-file",
-    "public_ip_address_log_file": "/full/path/to/public-ip-address.log"
+    "print": {
+        "errors_to_syslog": true,
+        "in_color": false
+    },
+    "public_ip_address_log_file": "/full/path/to/public-ip-address.log",
+    "verbose": true
 }
