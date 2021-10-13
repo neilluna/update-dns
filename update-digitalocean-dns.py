@@ -12,7 +12,7 @@ from rfc3339 import rfc3339
 import digitalocean
 
 
-SCRIPT_VERSION = '1.0.0'
+SCRIPT_VERSION = '2.0.0'
 SCRIPT_NAME = os.path.basename(__file__)
 
 
