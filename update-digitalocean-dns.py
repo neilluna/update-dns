@@ -12,7 +12,7 @@ from rfc3339 import rfc3339
 import digitalocean
 
 
-SCRIPT_VERSION = '2.0.0'
+SCRIPT_VERSION = '3.0.0'
 SCRIPT_NAME = os.path.basename(__file__)
 
 
@@ -43,10 +43,10 @@ class PrintHelper():
     }
 
 
-    def __init__(self, print_in_color=False, print_errors_to_syslog=False):
-        self.print_in_color = print_in_color
-        self.print_errors_to_syslog = print_errors_to_syslog
-        if print_errors_to_syslog:
+    def __init__(self, send_in_color=False, send_to_syslog=False):
+        self.send_in_color = send_in_color
+        self.send_to_syslog = send_to_syslog
+        if send_to_syslog:
             syslog.openlog(ident=SCRIPT_NAME, logoption=syslog.LOG_PID)
 
 
@@ -68,10 +68,10 @@ class PrintHelper():
 
     def send_message(self, message, color, send_to_stderr, syslog_level):
         ''' Print a message '''
-        if self.print_errors_to_syslog:
+        if self.send_to_syslog:
             syslog.syslog(syslog_level, f'{message}')
             return
-        if self.print_in_color:
+        if self.send_in_color:
             message = f"{self.colors_codes[color]}{message}{self.colors_codes['reset']}"
         if send_to_stderr:
             print(message, file=sys.stderr)
@@ -90,10 +90,10 @@ class DNSUpdater():
 
     def __init__(self, configuration):
         self.configuration = configuration
-        print_in_color = self.configuration['print']['in_color']
-        print_errors_to_syslog = self.configuration['print']['errors_to_syslog']
-        self.print = PrintHelper(print_in_color, print_errors_to_syslog)
-        self.verbose = configuration['verbose']
+        send_in_color = self.configuration['messages']['send_in_color']
+        send_to_syslog = self.configuration['messages']['send_to_syslog']
+        self.print = PrintHelper(send_in_color, send_to_syslog)
+        self.verbose = configuration['messages']['verbose']
 
         self.public_ip_address = self.get_public_ip_address()
 
@@ -212,7 +212,7 @@ class Main():
 
 
     def __init__(self):
-        self.print = PrintHelper(print_in_color=False, print_errors_to_syslog=False)
+        self.print = PrintHelper(send_in_color=False, send_to_syslog=False)
         if len(sys.argv) != 2:
             self.print.error("Incorrect number of arguments.")
             print_usage()
@@ -222,10 +222,10 @@ class Main():
         self.configuration = self.read_conguration(configuration_file)
         self.updater = DigitalOceanDNSUpdater(self.configuration)
 
-        print_in_color = self.configuration['print']['in_color']
-        print_errors_to_syslog = self.configuration['print']['errors_to_syslog']
-        self.print = PrintHelper(print_in_color, print_errors_to_syslog)
-        self.verbose = self.configuration['verbose']
+        send_in_color = self.configuration['messages']['send_in_color']
+        send_to_syslog = self.configuration['messages']['send_to_syslog']
+        self.print = PrintHelper(send_in_color, send_to_syslog)
+        self.verbose = self.configuration['messages']['verbose']
 
         if self.updater.public_ip_address != self.updater.last_public_ip_address:
             for cfg_domain in self.configuration['domains']:
