@@ -8,11 +8,11 @@
             ]
         }
     ],
-    "personal_access_token_file": "/full/path/to/digitalocean-personal-access-token-file",
-    "print": {
-        "errors_to_syslog": true,
-        "in_color": false
+    "messages": {
+        "send_in_color": false,
+        "send_to_syslog": true,
+        "verbose": false
     },
-    "public_ip_address_log_file": "/full/path/to/public-ip-address.log",
-    "verbose": true
+    "personal_access_token_file": "/full/path/to/digitalocean-personal-access-token-file",
+    "public_ip_address_log_file": "/full/path/to/public-ip-address.log"
 }
